@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="main">
-    <div class="filters">
+    <div v-if="dataLoaded" class="filters">
       <Filter v-model="name" name="По ФИО" type="byText" />
       <Filter v-model="region" name="По региону" type="byOptions" :options="regions" />
       <Filter v-model="status" name="По статусу" type="byOptions" :options="statuses" />
@@ -21,43 +21,64 @@
 
 <script setup lang="ts">
 import {DateTime} from "ts-luxon";
-import clientList from "../data/clients.json";
+import axios from 'axios';
 import { Option } from '../types/Option';
+import { Client } from "../types/Client";
 import { ref, computed } from 'vue';
 import Filter from "./Filter.vue";
-const startClientList = ref(clientList);
-const clientListKeys = Object.keys(startClientList.value[0]);
+const dataLoaded = ref<boolean>(false);
+const rawData = ref();
+const startClientList = ref();
 const regions = ref<Option[]>([{id: 'all', name: "Любой"}]);
 const statuses = ref<Option[]>([{id: 'all', name: "Любой"}]);
 const name = ref('');
 const region = ref('Любой');
 const status = ref('Любой');
-startClientList.value.forEach((item) => {
-  let foundRegion = regions.value.find(el => el.name === item.region);
-  if (!foundRegion) {
-  regions.value = [...regions.value, {
-    id: item.id,
-    name: item.region
-  }];
+const clientListKeys = ref<String[]>([]);
+const formattedClientList = ref<Client[]>([]);
+
+axios.get("https://api.jsonbin.io/v3/b/65ab8e911f5677401f21affe", {
+  headers: {
+    "X-Master-Key": "$2a$10$JOYEwsK0HhcGPLkI0zEMjO5WNZX4lEjIqaCaHG33KNHb8BiVxUaVi"
   }
-  let foundStatus = statuses.value.find(el => el.name === item.status);
-  if (!foundStatus) {
-    statuses.value = [...statuses.value, {
+}).then((data) => {
+  rawData.value = data;
+  startClientList.value = rawData.value.data.record;
+  clientListKeys.value = Object.keys(startClientList.value[0]);
+
+  startClientList.value.forEach((item: Client) => {
+    let foundRegion = regions.value.find(el => el.name === item.region);
+    if (!foundRegion) {
+    regions.value = [...regions.value, {
       id: item.id,
-      name: item.status
+      name: item.region
     }];
-  }
+    }
+    let foundStatus = statuses.value.find(el => el.name === item.status);
+    if (!foundStatus) {
+      statuses.value = [...statuses.value, {
+        id: item.id,
+        name: item.status
+      }];
+    }
+  });
+
+  dataLoaded.value = true;
+
+  formattedClientList.value = startClientList.value.map((item: Client) => {
+    return { ...item, created_at: DateTime.fromISO(item.created_at).toFormat("dd/MM/yy") }
+  });
 });
-const formattedClientList = startClientList.value.map((item) => {
-  return { ...item, created_at: DateTime.fromISO(item.created_at).toFormat("dd/MM/yy") }
-});
+
 const filteredClientList = computed(() => {
- return formattedClientList.filter((item) => {
+ return formattedClientList.value.filter((item: Client) => {
     return (name.value === '' ? true : item.fullname.toLowerCase().includes(name.value.toLowerCase()))
     && (region.value === 'Любой' ? true : item.region === region.value)
     && (status.value === 'Любой' ? true : item.status === status.value);
  });
 });
+
+
 </script>
 
 <style scoped>

@@ -9,8 +9,12 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.7.2",
+    "axios": "^1.6.5",
     "core-js": "^3.8.3",
+    "cors": "^2.8.5",
+    "json-server": "^1.0.0-alpha.21",
     "luxon": "^3.4.4",
+    "nodemon": "^3.0.3",
     "ts-luxon": "^4.5.1",
     "vue": "^3.4.15"
   },
