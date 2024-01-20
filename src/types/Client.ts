@@ -1,7 +1,7 @@
 export interface Client {
-  created_at: string; 
-  id: number; 
+  id?: number; 
   fullname: string; 
+  created_at?: string; 
   phone: string; 
   region: string; 
   status: string;
