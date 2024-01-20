@@ -2,16 +2,16 @@
 <template>
   <div class="main">
     <div class="filters">
-      <Filter name="По ФИО" type="byText" />
-      <Filter name="По региону" type="byOptions" :options="regions" :selectedOption="regions[0]"/>
-      <Filter name="По статусу" type="byOptions" :options="statuses" :selectedOption="statuses[0]"/>
+      <Filter v-model="name" name="По ФИО" type="byText" />
+      <Filter v-model="region" name="По региону" type="byOptions" :options="regions" />
+      <Filter v-model="status" name="По статусу" type="byOptions" :options="statuses" />
     </div>
     <table>
       <thead>
         <th v-for="(key, index) in clientListKeys" :key="index">{{ key }}</th>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in formattedClientList" :key="index">
+        <tr v-for="(item, index) in filteredClientList" :key="index">
           <td v-for="(val, key) in item" :key="key">{{ val }}</td>
         </tr>
       </tbody>
@@ -23,12 +23,15 @@
 import {DateTime} from "ts-luxon";
 import clientList from "../data/clients.json";
 import { Option } from '../types/Option';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Filter from "./Filter.vue";
 const startClientList = ref(clientList);
 const clientListKeys = Object.keys(startClientList.value[0]);
-const regions = ref<Option[]>([]);
-const statuses = ref<Option[]>([]);
+const regions = ref<Option[]>([{id: 'all', name: "Любой"}]);
+const statuses = ref<Option[]>([{id: 'all', name: "Любой"}]);
+const name = ref('');
+const region = ref('Любой');
+const status = ref('Любой');
 startClientList.value.forEach((item) => {
   let foundRegion = regions.value.find(el => el.name === item.region);
   if (!foundRegion) {
@@ -48,7 +51,13 @@ startClientList.value.forEach((item) => {
 const formattedClientList = startClientList.value.map((item) => {
   return { ...item, created_at: DateTime.fromISO(item.created_at).toFormat("dd/MM/yy") }
 });
-
+const filteredClientList = computed(() => {
+ return formattedClientList.filter((item) => {
+    return (name.value === '' ? true : item.fullname.toLowerCase().includes(name.value.toLowerCase()))
+    && (region.value === 'Любой' ? true : item.region === region.value)
+    && (status.value === 'Любой' ? true : item.status === status.value);
+ });
+});
 </script>
 
 <style scoped>

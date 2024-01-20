@@ -15,6 +15,7 @@
   .sidebar-list {
     width: 20vw;
     background: #510FAD;
+    margin: 0;
   }
   .sidebar-list * {
     height: 70px;
