@@ -16,7 +16,8 @@
     "luxon": "^3.4.4",
     "nodemon": "^3.0.3",
     "ts-luxon": "^4.5.1",
-    "vue": "^3.4.15"
+    "vue": "^3.4.15",
+    "vue-router": "^4.0.13"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

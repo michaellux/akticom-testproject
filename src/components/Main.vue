@@ -12,7 +12,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in filteredClientList" :key="index">
-          <td v-for="(val, key) in item" :key="key">{{ val }}</td>
+            <td v-for="(val, key) in item" @click="navigateToClientDetails(item.id)" :key="key">{{ val }}</td>
         </tr>
       </tbody>
     </table>
@@ -25,6 +25,7 @@ import axios from 'axios';
 import { Option } from '../types/Option';
 import { Client } from "../types/Client";
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import Filter from "./Filter.vue";
 const dataLoaded = ref<boolean>(false);
 const rawData = ref();
@@ -78,7 +79,13 @@ const filteredClientList = computed(() => {
  });
 });
 
+const router = useRouter();
 
+const navigateToClientDetails = (clientId: number) => {
+  const currentItem = filteredClientList.value.find(el => el.id === clientId);
+  localStorage.setItem('currentClient', JSON.stringify(currentItem));
+  router.push(`/client/${clientId}`);
+};
 </script>
 
 <style scoped>
