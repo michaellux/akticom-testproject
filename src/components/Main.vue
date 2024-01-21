@@ -1,73 +1,99 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <div class="main">
-        <div v-if="dataLoaded" class="addclient-block">
-            <strong>{{ editMode ? 'Редактирование' : 'Добавление' }}</strong>
-            <Control
-                @keydown.enter="addClient"
-                v-model="addName"
-                name="ФИО"
-                type="byText"
-            />
-            <Control
-                @keydown.enter="addClient"
-                v-model="addPhone"
-                name="Телефон"
-                type="byPhone"
-            />
-            <Control
-                v-model="addRegion"
-                name="Регион"
-                type="byOptions"
-                :options="regions.filter((item) => item.name !== 'Любой')"
-            />
-            <Control
-                v-model="addStatus"
-                name="Статус"
-                type="byOptions"
-                :options="statuses.filter((item) => item.name !== 'Любой')"
-            />
-            <button v-if="editMode" @click="saveChanges">Сохранить</button>
-        </div>
-        <div v-if="dataLoaded" class="filters">
-            <strong>Фильтры</strong>
-            <Control v-model="name" name="По ФИО" type="byText" />
-            <Control
-                v-model="region"
-                name="По региону"
-                type="byOptions"
-                :options="regions"
-            />
-            <Control
-                v-model="status"
-                name="По статусу"
-                type="byOptions"
-                :options="statuses"
-            />
-        </div>
-        <table v-if="dataLoaded" class="table">
-            <thead>
-                <th v-for="(key, index) in clientListKeys" :key="index">
-                    {{ key }}
-                </th>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in filteredClientList" :key="index">
-                    <td
-                        v-for="(val, key) in item"
-                        @click="navigateToClientDetails(item.id)"
-                        :key="key"
+        <transition name="fade" mode="out-in">
+            <div v-if="dataLoaded" class="addclient-block">
+                <strong>{{
+                    editMode ? 'Редактирование' : 'Добавление'
+                }}</strong>
+                <Control
+                    @keydown.enter="addClient"
+                    v-model="addName"
+                    name="ФИО"
+                    type="byText"
+                />
+                <Control
+                    @keydown.enter="addClient"
+                    v-model="addPhone"
+                    name="Телефон"
+                    type="byPhone"
+                />
+                <Control
+                    v-model="addRegion"
+                    name="Регион"
+                    type="byOptions"
+                    :options="regions.filter((item) => item.name !== 'Любой')"
+                />
+                <Control
+                    v-model="addStatus"
+                    name="Статус"
+                    type="byOptions"
+                    :options="statuses.filter((item) => item.name !== 'Любой')"
+                />
+                <button
+                    class="gain-center"
+                    v-if="editMode"
+                    @click="saveChanges"
+                >
+                    Сохранить
+                </button>
+            </div>
+        </transition>
+        <transition name="fade" mode="out-in">
+            <div v-if="dataLoaded" class="filters">
+                <strong>Фильтры</strong>
+                <Control v-model="name" name="По ФИО" type="byText" />
+                <Control
+                    v-model="region"
+                    name="По региону"
+                    type="byOptions"
+                    :options="regions"
+                />
+                <Control
+                    v-model="status"
+                    name="По статусу"
+                    type="byOptions"
+                    :options="statuses"
+                />
+            </div>
+        </transition>
+        <transition name="fade" mode="out-in">
+            <table v-if="dataLoaded" class="table">
+                <thead>
+                    <th v-for="(key, index) in clientListKeys" :key="index">
+                        {{ key }}
+                    </th>
+                </thead>
+
+                <tbody>
+                    <tr
+                        v-for="(item, index) in filteredClientList"
+                        :key="index"
                     >
-                        {{ val }}
-                    </td>
-                    <button @click="activateEditMode(item.id)">
-                        Редактировать
-                    </button>
-                    <button @click="removeClient(item.id)">Удалить</button>
-                </tr>
-            </tbody>
-        </table>
-        <p v-if="!dataLoaded">Загрузка...</p>
+                        <td
+                            v-for="(val, key) in item"
+                            @click="navigateToClientDetails(item.id)"
+                            :key="key"
+                        >
+                            {{ val }}
+                        </td>
+                        <button
+                            class="gain-center"
+                            @click="activateEditMode(item.id)"
+                        >
+                            Редактировать
+                        </button>
+                        <button
+                            class="gain-center"
+                            @click="removeClient(item.id)"
+                        >
+                            Удалить
+                        </button>
+                    </tr>
+                </tbody>
+            </table>
+        </transition>
+        <p v-if="!dataLoaded">Загрузка данных...</p>
     </div>
 </template>
 
@@ -239,9 +265,15 @@ const navigateToClientDetails = (clientId: number) => {
     background: transparent;
     color: rgb(17, 16, 16);
 }
+.addclient-block {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0.7rem;
+    gap: 0.6rem;
+}
 .filters {
     display: flex;
-    padding: 1rem 0.7rem;
+    margin: 1rem 0.7rem;
     gap: 1rem;
 }
 .table {
@@ -269,13 +301,19 @@ const navigateToClientDetails = (clientId: number) => {
     font-size: 10px;
     text-align: left;
 }
+.table td:nth-child(2) {
+    cursor: pointer;
+    transition: 0.3s; /* Время эффекта */
+}
+.table td:nth-child(2):hover {
+    text-decoration: underline;
+    transform: scale(1.2); /* Увеличиваем масштаб */
+}
+.table td:not(:nth-child(2)) {
+    pointer-events: none;
+}
 .table tbody tr:nth-child(even) {
     background: #f8f8f8 !important;
-}
-.addclient-block {
-    display: flex;
-    padding: 1rem 0.7rem;
-    gap: 1rem;
 }
 button {
     display: inline-block;
@@ -297,5 +335,20 @@ button {
     appearance: none;
     touch-action: manipulation;
     vertical-align: top;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease-in-out;
+}
+.gain-center {
+    transition: 0.3s; /* Время эффекта */
+    text-align: center;
+}
+.gain-center:hover {
+    transform: scale(1.2); /* Увеличиваем масштаб */
 }
 </style>

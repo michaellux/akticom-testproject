@@ -3,6 +3,7 @@
     <div class="filter-block">
         <label for="">{{ name }}: </label>
         <input
+            class="text-name"
             v-maska
             data-maska="N N N"
             data-maska-tokens="{ 'N': { 'pattern': '[А-Яа-я]', 'multiple': true }}"
@@ -59,12 +60,15 @@ input {
     outline: none;
 }
 select {
-  border: 1px solid #fff;
-  border-bottom: 2px solid #1976d2;
-  padding: 0.25em 0.5em;
-  cursor: pointer;
-  line-height: 1.1;
-  background-color: #fff;
-  outline: none;
+    border: 1px solid #fff;
+    border-bottom: 2px solid #1976d2;
+    padding: 0.25em 0.5em;
+    cursor: pointer;
+    line-height: 1.1;
+    background-color: #fff;
+    outline: none;
+}
+.text-name {
+    width: 15rem;
 }
 </style>
