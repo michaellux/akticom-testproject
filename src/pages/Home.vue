@@ -7,10 +7,8 @@
 </template>
 
 <script setup lang="ts">
-  import Sidebar from '../components/Sidebar.vue';
-  import Main from '../components/Main.vue';
+import Sidebar from "../components/Sidebar.vue";
+import Main from "../components/Main.vue";
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

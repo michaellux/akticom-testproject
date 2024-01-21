@@ -1,30 +1,15 @@
 module.exports = {
-  root: true,
-  env: {
-    node: true,
-    browser: true,
+  "root": true,
+  "env": {
+    "node": true
   },
-  extends: [
-    "plugin:vue/recommended",
+  "extends": [
+    "plugin:vue/vue3-essential",
     "eslint:recommended",
-    "plugin:prettier/recommended",
+    "@vue/typescript"
   ],
-  rules: {
-    "prettier/prettier": [
-      "error",
-      {
-        endOfLine: "auto",
-      },
-    ],
-    "vue/component-name-in-template-casing": ["error", "PascalCase"],
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser"
   },
-  globals: {
-    $nuxt: true,
-  },
-  parserOptions: {
-    parser: "@babel/eslint-parser",
-    requireConfigFile: false,
-  },
-};
+  "rules": {}
+}
