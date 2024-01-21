@@ -64,7 +64,7 @@
                         {{ key }}
                     </th>
                 </thead>
-                <tbody>
+                <tbody v-draggable="filteredClientList">
                     <tr
                         v-for="(item, index) in filteredClientList"
                         :key="index"
@@ -104,7 +104,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useClientsStore } from '../store'
 import Control from './Control.vue'
-
+import { vDraggable } from 'vue-draggable-plus'
 const dataLoaded = ref<boolean>(false)
 const startClientList = ref()
 const regions = ref<Option[]>([{ id: 'all', name: 'Любой' }])
