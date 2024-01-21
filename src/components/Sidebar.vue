@@ -7,27 +7,25 @@
   </ul>
 </template>
 
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
-  .sidebar-list {
-    width: 20vw;
-    background: #510FAD;
-    margin: 0;
-  }
-  .sidebar-list * {
-    height: 70px;
-    color: #510FAD;
-  }
-  .first {
-    background: #FFE700;
-  }
-  .second {
-    background: #FFED40;
-  }
-  .third {
-    background: #FFF273;
-  }
+.sidebar-list {
+  width: 20vw;
+  background: #510fad;
+  margin: 0;
+}
+.sidebar-list * {
+  height: 70px;
+  color: #510fad;
+}
+.first {
+  background: #ffe700;
+}
+.second {
+  background: #ffed40;
+}
+.third {
+  background: #fff273;
+}
 </style>
