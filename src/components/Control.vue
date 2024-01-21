@@ -51,4 +51,20 @@ let options = ref(props.options)
 </script>
 
 <style scoped>
+input {
+    border: 0;
+    border-bottom: 2px solid #1976d2;
+    text-align: center;
+    background: transparent;
+    outline: none;
+}
+select {
+  border: 1px solid #fff;
+  border-bottom: 2px solid #1976d2;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+  line-height: 1.1;
+  background-color: #fff;
+  outline: none;
+}
 </style>

@@ -12,20 +12,22 @@
 <style scoped>
 .sidebar-list {
   width: 20vw;
-  background: #510fad;
+  background: #ffffff;
   margin: 0;
+  padding: 0;
 }
 .sidebar-list * {
   height: 70px;
   color: #510fad;
+  line-height: 4em;
 }
 .first {
-  background: #ffe700;
+  background: #fafaf8;
 }
 .second {
-  background: #ffed40;
+  background: #ededec;
 }
 .third {
-  background: #fff273;
+  background: #ebe6e6;
 }
 </style>

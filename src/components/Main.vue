@@ -1,44 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <div class="main">
-        <div v-if="dataLoaded" class="filters">
-            <strong>Фильтры</strong>
-            <Control v-model="name" name="По ФИО" type="byText" />
-            <Control
-                v-model="region"
-                name="По региону"
-                type="byOptions"
-                :options="regions"
-            />
-            <Control
-                v-model="status"
-                name="По статусу"
-                type="byOptions"
-                :options="statuses"
-            />
-        </div>
-        <table class="table">
-            <thead>
-                <th v-for="(key, index) in clientListKeys" :key="index">
-                    {{ key }}
-                </th>
-            </thead>
-            <tbody>
-                <tr v-for="(item, index) in filteredClientList" :key="index">
-                    <td
-                        v-for="(val, key) in item"
-                        @click="navigateToClientDetails(item.id)"
-                        :key="key"
-                    >
-                        {{ val }}
-                    </td>
-                    <button @click="activateEditMode(item.id)">
-                        Редактировать
-                    </button>
-                    <button @click="removeClient(item.id)">Удалить</button>
-                </tr>
-            </tbody>
-        </table>
         <div v-if="dataLoaded" class="addclient-block">
             <strong>{{ editMode ? 'Редактирование' : 'Добавление' }}</strong>
             <Control
@@ -67,6 +29,45 @@
             />
             <button v-if="editMode" @click="saveChanges">Сохранить</button>
         </div>
+        <div v-if="dataLoaded" class="filters">
+            <strong>Фильтры</strong>
+            <Control v-model="name" name="По ФИО" type="byText" />
+            <Control
+                v-model="region"
+                name="По региону"
+                type="byOptions"
+                :options="regions"
+            />
+            <Control
+                v-model="status"
+                name="По статусу"
+                type="byOptions"
+                :options="statuses"
+            />
+        </div>
+        <table v-if="dataLoaded" class="table">
+            <thead>
+                <th v-for="(key, index) in clientListKeys" :key="index">
+                    {{ key }}
+                </th>
+            </thead>
+            <tbody>
+                <tr v-for="(item, index) in filteredClientList" :key="index">
+                    <td
+                        v-for="(val, key) in item"
+                        @click="navigateToClientDetails(item.id)"
+                        :key="key"
+                    >
+                        {{ val }}
+                    </td>
+                    <button @click="activateEditMode(item.id)">
+                        Редактировать
+                    </button>
+                    <button @click="removeClient(item.id)">Удалить</button>
+                </tr>
+            </tbody>
+        </table>
+        <p v-if="!dataLoaded">Загрузка...</p>
     </div>
 </template>
 
@@ -175,7 +176,7 @@ const addClient = () => {
         status: addStatus.value,
     }
     clientStore.addClient(newClient)
-    console.log(clientStore.lastItem);
+    console.log(clientStore.lastItem)
     localStorage.setItem(
         `CLient#${clientStore.maxId}`,
         JSON.stringify(clientStore.lastItem)
@@ -240,15 +241,61 @@ const navigateToClientDetails = (clientId: number) => {
 }
 .filters {
     display: flex;
-    padding: 1rem;
+    padding: 1rem 0.7rem;
     gap: 1rem;
 }
 .table {
-    padding: 1rem;
+    width: 100%;
+    border: 5px solid #fff;
+    border-top: 5px solid #fff;
+    border-bottom: 3px solid #fff;
+    border-collapse: collapse;
+    font-size: 15px;
+    background: #fff !important;
+}
+.table th {
+    font-weight: bold;
+    padding: 7px;
+    border: none;
+    text-align: left;
+    font-size: 15px;
+    border-top: 3px solid #fff;
+}
+.table td {
+    padding: 7px;
+    border: none;
+    border-top: 3px solid #fff;
+    border-bottom: 3px solid #fff;
+    font-size: 10px;
+    text-align: left;
+}
+.table tbody tr:nth-child(even) {
+    background: #f8f8f8 !important;
 }
 .addclient-block {
     display: flex;
-    padding: 1rem;
+    padding: 1rem 0.7rem;
     gap: 1rem;
+}
+button {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0 15px 0 0;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    color: #1976d2;
+    background-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    appearance: none;
+    touch-action: manipulation;
+    vertical-align: top;
 }
 </style>
