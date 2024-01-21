@@ -64,7 +64,6 @@
                         {{ key }}
                     </th>
                 </thead>
-
                 <tbody>
                     <tr
                         v-for="(item, index) in filteredClientList"

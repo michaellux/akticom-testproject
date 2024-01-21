@@ -1,13 +1,23 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <ul class="sidebar-list">
-    <li class="first">1</li>
-    <li class="second">2</li>
-    <li class="third">3</li>
-  </ul>
+  <draggable class="sidebar-list" v-model="items" tag="ul">
+    <template #item="{ element: item }">
+      <li>{{ item }}</li>
+    </template>
+  </draggable>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue';
+import draggable from 'vuedraggable';
+const items = ref([
+  'Отчёты',
+  'Справки',
+  'Распоряжения',
+  'Справочники',
+  'Регламенты',
+]);
+</script>
 
 <style scoped>
 .sidebar-list {

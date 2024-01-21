@@ -20,7 +20,8 @@
     "prettier": "^3.2.4",
     "ts-luxon": "^4.5.1",
     "vue": "^3.4.15",
-    "vue-router": "^4.0.13"
+    "vue-router": "^4.0.13",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
